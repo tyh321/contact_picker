@@ -34,9 +34,13 @@ class ContactPicker private constructor(private val pickContext: PickContext, pr
     }
 
     private fun requestPicker() {
-        val pickerIntent = Intent(Intent.ACTION_PICK, type)
-        pickContext.addActivityResultListener(this)
-        pickContext.activity.startActivityForResult(pickerIntent, requestCode)
+        try {
+            val pickerIntent = Intent(Intent.ACTION_PICK, type)
+            pickContext.addActivityResultListener(this)
+            pickContext.activity.startActivityForResult(pickerIntent, requestCode)
+        } catch (e: ActivityNotFoundException) {
+            throw e
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
